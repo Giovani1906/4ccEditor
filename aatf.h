@@ -47,7 +47,7 @@ namespace gold { //gold stats
 
 }
 namespace silver { //silver stats
-	const int count = 2; //number of this type of player allowed
+	const int count = 3; //number of this type of player allowed
 	const int form = 8;
 	const int injury_resistance = 3;
 	const int weak_foot_usage = 2;
@@ -90,7 +90,7 @@ namespace silver { //silver stats
 		tight_possession, aggression };
 }
 namespace regular { //regular player stats
-	const int count = 19; //number of this type of player allowed
+	const int count = 18; //number of this type of player allowed
 	const int form = 4;
 	const int injury_resistance = 1;
 	const int weak_foot_usage = 2;
@@ -143,7 +143,7 @@ namespace goalkeeper {
 	const int coms = 0; //free coms allowed
 	const int a_pos = 1; //free a positions allowed, note this includes the A position that a registered position gives
 
-	const int base_stat = 77; //base stat value used if no changes. if a stat below is set at 0, this value will be used.
+	const int base_stat = 74; //base stat value used if no changes. if a stat below is set at 0, this value will be used.
 	const int manlet_buff = 5; //if running red bracket, buff by this amount
 	const int height_nerf = 0; //if running green bracket, nerf by this amount
 	const int offensive_awareness = 0;
