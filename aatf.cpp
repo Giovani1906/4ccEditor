@@ -134,6 +134,10 @@ void aatf_single(HWND hAatfbox, int pesVersion, int teamSel, player_entry* gplay
 		int heightMod = 0;
 		int statMod = 0;
 		bool hasTrick = false;
+		// Height nerfs and buff
+		bool allowGreen = false;
+		int manletBuff = 0;
+		int heightNerf = 0;
 		// Form, Injury Resist and Weak Foot
 		int reqForm = 0;
 		int reqInjResist = 0;
@@ -289,6 +293,10 @@ void aatf_single(HWND hAatfbox, int pesVersion, int teamSel, player_entry* gplay
 			numReg++;
 			using namespace goalkeeper;
 
+			allowGreen = allow_green;
+			manletBuff = manlet_buff;
+			heightNerf = height_nerf;
+
 			reqAPos = a_pos;
 			reqForm = form;
 			reqInjResist = injury_resistance;
@@ -325,17 +333,6 @@ void aatf_single(HWND hAatfbox, int pesVersion, int teamSel, player_entry* gplay
 			targetDefProw = defensive_awareness;
 			targetTightPos = tight_possession;
 			targetAggres = aggression;
-
-			if (player.height >= heightGiant) //HA get penalty
-			{
-				targetRate -= height_nerf;
-				statMod -= height_nerf;
-			}
-			else if (player.height <= heightManlet && usingRed)
-			{
-				targetRate += manlet_buff;
-				statMod += manlet_buff;
-			}
 		}
 		/* REGULAR */
 		else if (rating < (silver::base_stat - silver::height_nerf)) //Regular player
@@ -343,6 +340,10 @@ void aatf_single(HWND hAatfbox, int pesVersion, int teamSel, player_entry* gplay
 			numReg++;
 			using namespace regular;
 
+			allowGreen = allow_green;
+			manletBuff = manlet_buff;
+			heightNerf = height_nerf;
+
 			reqAPos = a_pos;
 			reqForm = form;
 			reqInjResist = injury_resistance;
@@ -379,23 +380,16 @@ void aatf_single(HWND hAatfbox, int pesVersion, int teamSel, player_entry* gplay
 			targetDefProw = defensive_awareness;
 			targetTightPos = tight_possession;
 			targetAggres = aggression;
-
-			if (player.height >= heightGiant) //HA get penalty
-			{
-				targetRate -= height_nerf;
-				statMod -= height_nerf;
-			}
-			else if (player.height <= heightManlet && usingRed)
-			{
-				targetRate += manlet_buff;
-				statMod += manlet_buff;
-			}
 		}
 		/* SILVER */
 		else if (rating < (gold::base_stat - gold::height_nerf)) //Silver player
 		{
 			numSilver++;
 			using namespace silver;
+
+			allowGreen = allow_green;
+			manletBuff = manlet_buff;
+			heightNerf = height_nerf;
 
 			reqAPos = a_pos;
 			reqForm = form;
@@ -438,16 +432,6 @@ void aatf_single(HWND hAatfbox, int pesVersion, int teamSel, player_entry* gplay
 			{
 				errorTot++;
 				errorMsg << _T("\tMedals cannot play as GK;\r\n");
-			}
-			if (player.height >= heightGiant) //HA get penalty
-			{
-				targetRate -= height_nerf;
-				statMod -= height_nerf;
-			}
-			else if (player.height <= heightManlet && usingRed)
-			{
-				targetRate += manlet_buff;
-				statMod += manlet_buff;
 			}
 		}
 		/* GOLD */
@@ -456,6 +440,10 @@ void aatf_single(HWND hAatfbox, int pesVersion, int teamSel, player_entry* gplay
 			numGold++;
 			using namespace gold;
 
+			allowGreen = allow_green;
+			manletBuff = manlet_buff;
+			heightNerf = height_nerf;
+
 			reqAPos = a_pos;
 			reqForm = form;
 			reqInjResist = injury_resistance;
@@ -497,16 +485,6 @@ void aatf_single(HWND hAatfbox, int pesVersion, int teamSel, player_entry* gplay
 			{
 				errorTot++;
 				errorMsg << _T("\tMedals cannot play as GK;\r\n");
-			}
-			if (player.height >= heightGiant) //HA get penalty
-			{
-				targetRate -= height_nerf;
-				statMod -= height_nerf;
-			}
-			else if (player.height <= heightManlet && usingRed)
-			{
-				targetRate += manlet_buff;
-				statMod += manlet_buff;
 			}
 		}
 		else
@@ -587,6 +565,24 @@ void aatf_single(HWND hAatfbox, int pesVersion, int teamSel, player_entry* gplay
 		{
 			errorTot++;
 			errorMsg << _T("Illegal height (") << player.height << _T(" cm); ");
+		}
+
+		if (player.height >= heightGiant) //HA get penalty
+		{
+			if (!allowGreen)
+			{
+				errorTot++;
+				errorMsg << _T("This player cannot be ") << heightGiant << _T("cm tall; ");
+			}
+			else {
+				targetRate -= heightNerf;
+				statMod -= heightNerf;
+			}
+		}
+		else if (player.height <= heightManlet && usingRed)
+		{
+			targetRate += manletBuff;
+			statMod += manletBuff;
 		}
 
 		if (player.form + 1 != reqForm)

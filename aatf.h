@@ -15,6 +15,7 @@ namespace gold { //gold stats
 
 	const int base_stat = 99; //base stat value used if no changes. if a stat below is set at 0, this value will be used.
 	const int manlet_buff = 0; //if running red bracket, buff by this amount
+	const bool allow_green = false; //if it can use height abuse
 	const int height_nerf = 0; //if running green bracket, nerf by this amount
 	const int offensive_awareness = 0;
 	const int ball_control = 0;
@@ -59,6 +60,7 @@ namespace silver { //silver stats
 
 	const int base_stat = 88; //base stat value used if no changes. if a stat below is set at 0, this value will be used.
 	const int manlet_buff = 0; //if running red bracket, buff by this amount
+	const bool allow_green = true; //if it can use height abuse
 	const int height_nerf = 0; //if running green bracket, nerf by this amount
 	const int offensive_awareness = 0;
 	const int ball_control = 0;
@@ -102,6 +104,7 @@ namespace regular { //regular player stats
 
 	const int base_stat = 77; //base stat value used if no changes. if a stat below is set at 0, this value will be used.
 	const int manlet_buff = 5; //if running red bracket, buff by this amount
+	const bool allow_green = true; //if it can use height abuse
 	const int height_nerf = 0; //if running green bracket, nerf by this amount
 	const int offensive_awareness = 0;
 	const int ball_control = 0;
@@ -145,6 +148,7 @@ namespace goalkeeper {
 
 	const int base_stat = 74; //base stat value used if no changes. if a stat below is set at 0, this value will be used.
 	const int manlet_buff = 5; //if running red bracket, buff by this amount
+	const bool allow_green = false; //if it can use height abuse
 	const int height_nerf = 0; //if running green bracket, nerf by this amount
 	const int offensive_awareness = 0;
 	const int ball_control = 0;
@@ -190,6 +194,7 @@ namespace blank_example { //has all stats 0'd out for easier removal of stat cha
 
 	const int base_stat = 0; //base stat value used if no changes. if a stat below is set at 0, this value will be used.
 	const int manlet_buff = 5; //if running red bracket, buff by this amount
+	const bool allow_green = true; //if it can use height abuse
 	const int height_nerf = 0; //if running green bracket, nerf by this amount
 	const int offensive_awareness = 0;
 	const int ball_control = 0;
