@@ -892,17 +892,15 @@ LRESULT CALLBACK wnd_proc(HWND H, UINT M, WPARAM W, LPARAM L)
 					{
 						using namespace gold; //use gold stats only
 						int ii;
+						int statmod = 0;
+						if (gplayers[gn_playind[gn_listsel]].height >= heightGiant) statmod = height_nerf;
+
 						for (ii = IDT_ABIL_ATKP; ii < gi_lastAbility; ii += 2)
 						{
 							if (stat_array[(ii - IDT_ABIL_ATKP) / 2] == 0) //stat is not changed from base stat value
-							{
-								SendDlgItemMessage(ghw_tab1, ii, WM_SETTEXT, 0, (LPARAM)std::to_wstring(base_stat).c_str());
-							}
+								SendDlgItemMessage(ghw_tab1, ii, WM_SETTEXT, 0, (LPARAM)std::to_wstring(base_stat - statmod).c_str());
 							else //stat is changed
-							{
-								SendDlgItemMessage(ghw_tab1, ii, WM_SETTEXT, 0, (LPARAM)std::to_wstring(stat_array[(ii - IDT_ABIL_ATKP) / 2]).c_str());
-							}
-
+								SendDlgItemMessage(ghw_tab1, ii, WM_SETTEXT, 0, (LPARAM)std::to_wstring(stat_array[(ii - IDT_ABIL_ATKP) / 2] - statmod).c_str());
 						}
 
 						SendDlgItemMessage(ghw_tab1, IDT_ABIL_FORM, WM_SETTEXT, 0, (LPARAM)std::to_wstring(form).c_str());
@@ -918,17 +916,15 @@ LRESULT CALLBACK wnd_proc(HWND H, UINT M, WPARAM W, LPARAM L)
 					{
 						using namespace silver; //use silver stats only
 						int ii;
+						int statmod = 0;
+						if (gplayers[gn_playind[gn_listsel]].height >= heightGiant) statmod = height_nerf;
+
 						for (ii = IDT_ABIL_ATKP; ii < gi_lastAbility; ii += 2)
 						{
 							if (stat_array[(ii - IDT_ABIL_ATKP) / 2] == 0) //stat is not changed from base stat value
-							{
-								SendDlgItemMessage(ghw_tab1, ii, WM_SETTEXT, 0, (LPARAM)std::to_wstring(base_stat).c_str());
-							}
+								SendDlgItemMessage(ghw_tab1, ii, WM_SETTEXT, 0, (LPARAM)std::to_wstring(base_stat - statmod).c_str());
 							else //stat is changed
-							{
-								SendDlgItemMessage(ghw_tab1, ii, WM_SETTEXT, 0, (LPARAM)std::to_wstring(stat_array[(ii - IDT_ABIL_ATKP) / 2]).c_str());
-							}
-
+								SendDlgItemMessage(ghw_tab1, ii, WM_SETTEXT, 0, (LPARAM)std::to_wstring(stat_array[(ii - IDT_ABIL_ATKP) / 2] - statmod).c_str());
 						}
 
 						SendDlgItemMessage(ghw_tab1, IDT_ABIL_FORM, WM_SETTEXT, 0, (LPARAM)std::to_wstring(form).c_str());
@@ -938,23 +934,43 @@ LRESULT CALLBACK wnd_proc(HWND H, UINT M, WPARAM W, LPARAM L)
 					}
 				}
 				break;
+				case IDB_MAKE_BUFF:
+				{
+					if (HIWORD(W) == BN_CLICKED)
+					{
+						using namespace regular; //use regular stats only
+						int ii;
+
+						for (ii = IDT_ABIL_ATKP; ii < gi_lastAbility; ii += 2)
+						{
+							if (stat_array[(ii - IDT_ABIL_ATKP) / 2] == 0) //stat is not changed from base stat value
+								SendDlgItemMessage(ghw_tab1, ii, WM_SETTEXT, 0, (LPARAM)std::to_wstring(base_stat + manlet_buff).c_str());
+							else //stat is changed
+								SendDlgItemMessage(ghw_tab1, ii, WM_SETTEXT, 0, (LPARAM)std::to_wstring(stat_array[(ii - IDT_ABIL_ATKP) / 2] + manlet_buff).c_str());
+						}
+
+						SendDlgItemMessage(ghw_tab1, IDT_ABIL_FORM, WM_SETTEXT, 0, (LPARAM)std::to_wstring(form).c_str());
+						SendDlgItemMessage(ghw_tab1, IDT_ABIL_INJU, WM_SETTEXT, 0, (LPARAM)std::to_wstring(injury_resistance).c_str());
+						SendDlgItemMessage(ghw_tab1, IDT_ABIL_WKUS, WM_SETTEXT, 0, (LPARAM)std::to_wstring(manletWeakFootUse).c_str());
+						SendDlgItemMessage(ghw_tab1, IDT_ABIL_WKAC, WM_SETTEXT, 0, (LPARAM)std::to_wstring(manletWeakFootAcc).c_str());
+					}
+				}
+				break;
 				case IDB_MAKE_REGU:
 				{
 					if(HIWORD(W)==BN_CLICKED)
 					{
 						using namespace regular; //use regular stats only
 						int ii;
+						int statmod = 0;
+						if (gplayers[gn_playind[gn_listsel]].height >= heightGiant) statmod = height_nerf;
+
 						for (ii = IDT_ABIL_ATKP; ii < gi_lastAbility; ii += 2)
 						{
 							if (stat_array[(ii - IDT_ABIL_ATKP) / 2] == 0) //stat is not changed from base stat value
-							{
-								SendDlgItemMessage(ghw_tab1, ii, WM_SETTEXT, 0, (LPARAM)std::to_wstring(base_stat).c_str());
-							}
+								SendDlgItemMessage(ghw_tab1, ii, WM_SETTEXT, 0, (LPARAM)std::to_wstring(base_stat - statmod).c_str());
 							else //stat is changed
-							{
-								SendDlgItemMessage(ghw_tab1, ii, WM_SETTEXT, 0, (LPARAM)std::to_wstring(stat_array[(ii - IDT_ABIL_ATKP) / 2]).c_str());
-							}
-
+								SendDlgItemMessage(ghw_tab1, ii, WM_SETTEXT, 0, (LPARAM)std::to_wstring(stat_array[(ii - IDT_ABIL_ATKP) / 2] - statmod).c_str());
 						}
 
 						SendDlgItemMessage(ghw_tab1, IDT_ABIL_FORM, WM_SETTEXT, 0, (LPARAM)std::to_wstring(form).c_str());

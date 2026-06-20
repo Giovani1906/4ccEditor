@@ -39,33 +39,6 @@ struct skillCheck
 	CF		12		0 */
 int regPosToPlayPosMap[13] = { 12, 9, 10, 11, 5, 6, 7, 8, 4, 2, 3, 1, 0 };
 
-//============================
-//AATF Settings
-int manletCardBonus = 1; //Manlets get 1 extra card
-int manletWeakFootUse = 4; //Manlets get 4/4 weak foot usage/accuracy
-int manletWeakFootAcc = 4;
-int manletPosBonus = 1; //Manlets get 1 extra double A position
-
-int greenGiga = 0; //Green height bracket
-int greenGiant = 5;
-int greenTall = 6;
-int greenMid = 6;
-int greenManlet = 6;
-
-int redGiga = 0; //Red height bracket
-int redGiant = 0;
-int redTall = 10;
-int redMid = 7;
-int redManlet = 6;
-
-int heightGiga = 199; //Player heights in each category
-int heightGiant = 194;
-int heightTall = 185;
-int heightTallGK = 189;
-int heightMid = 180;
-int heightManlet = 175;
-
-
 void aatf_single(HWND hAatfbox, int pesVersion, int teamSel, player_entry* gplayers, team_entry* gteams, int gnum_players, bool useSuggestions)
 {
 	player_entry player;
@@ -148,6 +121,7 @@ void aatf_single(HWND hAatfbox, int pesVersion, int teamSel, player_entry* gplay
 		int reqSkill = 0;
 		int reqTrick = 0;
 		int reqCom = 0;
+		int extraCom = 0;
 		// Individual Stat Comparison
 		int targetRate = 0;
 		int targetDrib = 0;
@@ -536,7 +510,11 @@ void aatf_single(HWND hAatfbox, int pesVersion, int teamSel, player_entry* gplay
 			if (player.com_style[jj])
 			{
 				if (numCom < reqCom) numCom++;
-				else numSkill++;
+				else 
+				{
+					numSkill++;
+					extraCom++;
+				}
 			}
 		}
 
@@ -549,22 +527,15 @@ void aatf_single(HWND hAatfbox, int pesVersion, int teamSel, player_entry* gplay
 			weakFootUse = manletWeakFootUse; //Manlets get weak foot acc/use 4/4
 			weakFootAcc = manletWeakFootAcc;
 		}
-		else if ((player.height - heightMod) <= heightMid)
-		{
-			numMid++;
-		}
-		else if ((player.height - heightMod) == heightTall)
-			numTall++;
-		else if ((player.height - heightMod) == heightTallGK && player.reg_pos == 0) //GK
-			numTall++;
-		else if ((player.height - heightMod) == heightGiant)
-			numGiant++;
-		else if ((player.height - heightMod) == heightGiga)
-			numGiga++;
+		else if ((player.height - heightMod) <= heightMid) numMid++;
+		else if ((player.height - heightMod) == heightTall) numTall++;
+		else if ((player.height - heightMod) == heightTallGK && player.reg_pos == 0) numTall++; //GK
+		else if ((player.height - heightMod) == heightGiant) numGiant++;
+		else if ((player.height - heightMod) == heightGiga) numGiga++;
 		else
 		{
 			errorTot++;
-			errorMsg << _T("Illegal height (") << player.height << _T(" cm); ");
+			errorMsg << _T("\tIllegal height (") << player.height << _T(" cm);\r\n");
 		}
 
 		if (player.height >= heightGiant) //HA get penalty
@@ -572,7 +543,7 @@ void aatf_single(HWND hAatfbox, int pesVersion, int teamSel, player_entry* gplay
 			if (!allowGreen)
 			{
 				errorTot++;
-				errorMsg << _T("This player cannot be ") << heightGiant << _T("cm tall; ");
+				errorMsg << _T("\tThis player cannot be ") << heightGiant << _T("cm tall;\r\n");
 			}
 			else {
 				targetRate -= heightNerf;
@@ -621,7 +592,7 @@ void aatf_single(HWND hAatfbox, int pesVersion, int teamSel, player_entry* gplay
 		}
 
 		//Check PES skill card limit of 10
-		if (numSkill + numTrick > 10)
+		if ((numSkill - extraCom) + numTrick > 10)
 		{
 			errorTot++;
 			errorMsg << _T("\tHas ") << numSkill + numTrick << _T(" cards, PES limit is 10, please swap to COM cards or trade for additional A positions;\r\n");
@@ -712,62 +683,32 @@ void aatf_single(HWND hAatfbox, int pesVersion, int teamSel, player_entry* gplay
 		msgOut += _T("Using Green height system\r\n");
 		if (diff = greenGiga - numGiga)
 		{
-			if (diff > 0)
-			{
-				errorTot += diff;
-			}
-			else
-			{
-				errorTot -= diff;
-			}
+			if (diff > 0) errorTot += diff;
+			else errorTot -= diff;
 			errorMsg << _T("\tHas ") << numGiga << _T("/") << greenGiga << _T(" ") << heightGiga << _T("cm players;\r\n");
 		}
 		if (diff = greenGiant - numGiant)
 		{
-			if (diff > 0)
-			{
-				errorTot += diff;
-			}
-			else
-			{
-				errorTot -= diff;
-			}
+			if (diff > 0) errorTot += diff;
+			else errorTot -= diff;
 			errorMsg << _T("\tHas ") << numGiant << _T("/") << greenGiant << _T(" ") << heightGiant << _T("cm players;\r\n");
 		}
 		if (diff = greenTall - numTall)
 		{
-			if (diff > 0)
-			{
-				errorTot += diff;
-			}
-			else
-			{
-				errorTot -= diff;
-			}
+			if (diff > 0) errorTot += diff;
+			else errorTot -= diff;
 			errorMsg << _T("\tHas ") << numTall << _T("/") << greenTall << _T(" ") << heightTall << _T("/") << heightTallGK << _T("cm players;\r\n");
 		}
 		if (diff = greenMid - numMid)
 		{
-			if (diff > 0)
-			{
-				errorTot += diff;
-			}
-			else
-			{
-				errorTot -= diff;
-			}
+			if (diff > 0) errorTot += diff;
+			else errorTot -= diff;
 			errorMsg << _T("\tHas ") << numMid << _T("/") << greenMid << _T(" ") << heightMid << _T("cm players;\r\n");
 		}
 		if (diff = greenManlet - numManlet)
 		{
-			if (diff > 0)
-			{
-				errorTot += diff;
-			}
-			else
-			{
-				errorTot -= diff;
-			}
+			if (diff > 0) errorTot += diff;
+			else errorTot -= diff;
 			errorMsg << _T("\tHas ") << numManlet << _T("/") << greenManlet << _T(" ") << heightManlet << _T("cm players;\r\n");
 		}
 	}
@@ -786,38 +727,20 @@ void aatf_single(HWND hAatfbox, int pesVersion, int teamSel, player_entry* gplay
 		}
 		if (diff = redTall - numTall)
 		{
-			if (diff > 0)
-			{
-				errorTot += diff;
-			}
-			else
-			{
-				errorTot -= diff;
-			}
+			if (diff > 0) errorTot += diff;
+			else errorTot -= diff;
 			errorMsg << _T("\tHas ") << numTall << _T("/") << redTall << _T(" ") << heightTall << _T("/") << heightTallGK << _T("cm players;\r\n");
 		}
 		if (diff = redMid - numMid)
 		{
-			if (diff > 0)
-			{
-				errorTot += diff;
-			}
-			else
-			{
-				errorTot -= diff;
-			}
+			if (diff > 0) errorTot += diff;
+			else errorTot -= diff;
 			errorMsg << _T("\tHas ") << numMid << _T("/") << redMid << _T(" ") << heightMid << _T("cm players;\r\n");
 		}
 		if (diff = redManlet - numManlet)
 		{
-			if (diff > 0)
-			{
-				errorTot += diff;
-			}
-			else
-			{
-				errorTot -= diff;
-			}
+			if (diff > 0) errorTot += diff;
+			else errorTot -= diff;
 			errorMsg << _T("\tHas ") << numManlet << _T("/") << redManlet << _T(" ") << heightManlet << _T("cm players;\r\n");
 		}
 	}
@@ -850,8 +773,6 @@ void aatf_single(HWND hAatfbox, int pesVersion, int teamSel, player_entry* gplay
 	msgOut += errorMsg.str();
 
 	SetWindowText(GetDlgItem(hAatfbox, IDT_AATFOUT), msgOut.c_str());
-	if(errorTot)
-		SendDlgItemMessage(hAatfbox, IDB_AATFOK, WM_SETTEXT, 0, (LPARAM) _T("Alright, get their clothes"));
-	else
-		SendDlgItemMessage(hAatfbox, IDB_AATFOK, WM_SETTEXT, 0, (LPARAM) _T("GO TEAM EXPORT!"));
+	if(errorTot) SendDlgItemMessage(hAatfbox, IDB_AATFOK, WM_SETTEXT, 0, (LPARAM) _T("Alright, get their clothes"));
+	else SendDlgItemMessage(hAatfbox, IDB_AATFOK, WM_SETTEXT, 0, (LPARAM) _T("GO TEAM EXPORT!"));
 }

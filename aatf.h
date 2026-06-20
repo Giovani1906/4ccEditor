@@ -2,6 +2,32 @@
 //this file is meant to make updating the editor for stat changes exceedingly simple.
 //stats use pes21 names
 //stats that are listed as 0 will be replaced with the base_stat value in the editor.
+
+//AATF Settings
+const int manletCardBonus = 1; //Manlets get 1 extra card
+const int manletWeakFootUse = 4; //Manlets get 4/4 weak foot usage/accuracy
+const int manletWeakFootAcc = 4;
+const int manletPosBonus = 1; //Manlets get 1 extra double A position
+
+const int greenGiga = 0; //Green height bracket
+const int greenGiant = 5;
+const int greenTall = 6;
+const int greenMid = 6;
+const int greenManlet = 6;
+
+const int redGiga = 0; //Red height bracket
+const int redGiant = 0;
+const int redTall = 10;
+const int redMid = 7;
+const int redManlet = 6;
+
+const int heightGiga = 199; //Player heights in each category
+const int heightGiant = 194;
+const int heightTall = 185;
+const int heightTallGK = 189;
+const int heightMid = 180;
+const int heightManlet = 175;
+
 namespace gold { //gold stats
 	const int count = 2; //number of this type of player allowed
 	const int form = 8;
